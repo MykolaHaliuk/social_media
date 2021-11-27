@@ -42,12 +42,13 @@ router.put("/:id", async (req, res) => {
 //get user
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
+  console.log("🚀 ~ file: user.js ~ line 45 ~ router.get ~ req.query", req.query)
   const username = req.query.username;
   try {
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ username });
-
+    
     if (!user) {
       return res.status(404).json("User does not exist");
     }
@@ -58,6 +59,31 @@ router.get("/", async (req, res) => {
     return res.status(500).json(err);
   }
 });
+
+// get friends
+router.get("/friends/:userId", async (req, res) => {
+  try {
+      const user = await User.findById(req.params.userId)
+      console.log("🚀 ~ file: user.js ~ line 67 ~ router.get ~ user", user)
+        
+      const friends = await Promise.all(
+        user.followins.map(friendId => {
+
+            return User.findById(friendId);
+        })
+      )
+      
+      let friendList = [];
+      friends.map(friend => {
+        const {username, _id, profilePictrure} = friend;
+        friendList.push({username, _id, profilePictrure})
+      })
+      res.status(200).json(friendList);
+    } catch (e){
+      res.status(500).json(e)
+    }
+})
+
 // follow user
 router.put("/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {

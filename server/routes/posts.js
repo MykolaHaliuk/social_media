@@ -44,9 +44,11 @@ router.delete("/:id", async (req, res) => {
   }
 })
 // like
-router.post("/:id/like", async (req, res) => {
+router.put("/:id/like", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    console.log("🚀 ~ file: posts.js ~ line 50 ~ router.put ~ post", req.body.userId)
+    
     if(!post.likes.includes(req.body.userId)) {
       await post.updateOne({$push: { likes: req.body.userId }})
       res.status(200).json("The post has been liked.")
@@ -92,7 +94,7 @@ router.get("/timeline/:userId", async (req, res) => {
 
 router.get("/profile/:username", async (req, res) => {
   try {
-    const user = await User.findByOne({ username: req.params.username});
+    const user = await User.findOne({ username: req.params.username});
     const userPosts = await Post.find({userId: user._id});
     res.status(200).json(userPosts)
   } catch (e){
