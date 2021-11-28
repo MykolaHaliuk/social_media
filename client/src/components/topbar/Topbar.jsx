@@ -7,7 +7,6 @@ import { AuthContext } from "../../contex/AuthContext.js";
 export default function Topbar() {
 
   const { user } = useContext(AuthContext);
-  console.log("🚀 ~ file: Topbar.jsx ~ line 10 ~ Topbar ~ user", user)
   
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
@@ -37,10 +36,13 @@ export default function Topbar() {
             <Person />
             <span className="topbarIconBange">1</span>
           </div>
+          <Link to="/messenger" style={{textDecoration: "none"}}>
           <div className="topbarIconItem">
             <Chat />
             <span className="topbarIconBange">2</span>
           </div>
+          </Link>
+
           <div className="topbarIconItem">
             <Notifications />
             <span className="topbarIconBange">4</span>

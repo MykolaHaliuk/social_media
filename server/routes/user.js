@@ -42,7 +42,6 @@ router.put("/:id", async (req, res) => {
 //get user
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
-  console.log("🚀 ~ file: user.js ~ line 45 ~ router.get ~ req.query", req.query)
   const username = req.query.username;
   try {
     const user = userId
@@ -64,17 +63,15 @@ router.get("/", async (req, res) => {
 router.get("/friends/:userId", async (req, res) => {
   try {
       const user = await User.findById(req.params.userId)
-      console.log("🚀 ~ file: user.js ~ line 67 ~ router.get ~ user", user)
         
       const friends = await Promise.all(
         user.followins.map(friendId => {
-
             return User.findById(friendId);
         })
       )
       
       let friendList = [];
-      friends.map(friend => {
+      friends.map((friend) => {
         const {username, _id, profilePictrure} = friend;
         friendList.push({username, _id, profilePictrure})
       })

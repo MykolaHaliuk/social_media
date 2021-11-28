@@ -24,7 +24,7 @@ export function Rightbar({ user }) {
         const friendList = await axios.get("/users/friends/" + user._id);
         setFriends(friendList.data);
       } catch (e) {
-        console.log();
+        console.log(e);
       }
     };
     getFriends();

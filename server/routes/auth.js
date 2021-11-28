@@ -33,12 +33,11 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    console.log(req, "12312");
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
-    //!user && res.status(404).send("User not found");
+    !user && res.status(404).send("User not found");
 
     const validPassword = await bcrypt.compare(password, user.password);
     !validPassword && res.status(400).json("Wrong password");

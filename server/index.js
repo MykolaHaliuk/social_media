@@ -11,6 +11,9 @@ const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const postsRoute = require("./routes/posts");
 
+const converstationRoute = require("./routes/converstation");
+const messagesRoute = require("./routes/messages");
+
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
@@ -29,8 +32,6 @@ const storage = multer.diskStorage({
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-  console.log("🚀 ~ file: index.js ~ line 32 ~ req", req.body)
-    
     cb(null, req.body.name);
   },
 });
@@ -46,6 +47,8 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postsRoute);
+app.use("/api/converstation", converstationRoute);
+app.use("/api/messages", messagesRoute);
 
 app.listen(8800, () => {
   console.log("Server is running!");
